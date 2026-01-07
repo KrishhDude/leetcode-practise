@@ -8,6 +8,8 @@ public class LeetCodeProblemsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(LeetCodeProblemsApplication.class, args);
+
+        System.out.println("Application up and running");
     }
 
 }
