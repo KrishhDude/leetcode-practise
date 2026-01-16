@@ -31,6 +31,16 @@ public class StreamOps {
                 .toList();
 
 
+        List<Employee> distinctEmployees = employees.stream()
+                .collect(Collectors.toMap(
+                        Employee::getName,  // key mapper (property to distinct by)
+                        Function.identity(),  // value mapper (the employee object itself)
+                        (existing, replacement) -> existing  // merge function (keep the first occurrence)
+                ))
+                .values()
+                .stream()
+                .toList();
+
         Map<String, List<Employee>> employeesByRole = employees.stream()
                 .collect(Collectors.groupingBy(Employee::getRole));
 
