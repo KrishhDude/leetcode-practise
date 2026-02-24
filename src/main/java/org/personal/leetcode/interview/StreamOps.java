@@ -2,10 +2,7 @@ package org.personal.leetcode.interview;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -54,16 +51,15 @@ public class StreamOps {
                 // The Collectors.mapping() method is used to map each employee to its name,
                 // and the Collectors.toList() collector is used to collect the names into a list.
                 .collect(Collectors.groupingBy(
-                        Function.identity(),  // returns the input argument unchanged
-                        Collectors.mapping(
-                                Employee::getName,  // maps each employee to its name
-                                Collectors.toList())  // collects the names into a list
+                                Function.identity(),  // returns the input argument unchanged
+                                Collectors.mapping(
+                                        Employee::getName,  // maps each employee to its name
+                                        Collectors.toList())  // collects the names into a list
                         )
                 )
                 .entrySet().stream()
                 .map(e -> String.format("%s (%s)", e.getValue().size() > 1 ? "Team" : "Person", String.join(", ", e.getValue())))
                 .toList();
-
 
         long managerCount = employees.stream()
                 .map(Employee::getRole) // map each employee to its role
@@ -75,6 +71,44 @@ public class StreamOps {
                 .getOrDefault("Manager", 0L);
 
         ArrayList<Integer> myIntList = new ArrayList<>(Arrays.asList(6, 1, 9, 2, 5, 3, 8, 7, 4));
+
+
+        //combine two arrays and sort them
+        List<Integer> combinedSortedInts = Stream.concat(myIntList.stream(), myIntList.stream()).sorted().toList();
+
+        //combine two arrays and sort them
+        int[] x = {1, 3, 5};
+        int[] y = {2, 4, 6};
+        int[] combinedArray = Stream.of(x, y)
+                .flatMapToInt(Arrays::stream).toArray();
+        int[] sortedCombinedArray = Arrays.stream(combinedArray).sorted().toArray();
+
+
+        List<Integer> duplicates = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+
+        List<Integer> duplicateRemoved = duplicates.stream().distinct().toList();
+
+        String str = "hello";
+        Map<Character, Long> collect = str.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println(collect);
+
+        //first non repeating char
+         str.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .filter(i -> i.getValue() > 1)
+                .map(Map.Entry::getKey)
+                .findFirst().ifPresent(System.out::println);
+
+        Map<String, List<Employee>> collect1 = employees.stream()
+                .collect(Collectors.groupingBy(Employee::getRole, Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        list -> list.stream()
+                                .sorted(Comparator.comparing(Employee::getAge).reversed()).toList())));
+
     }
 
     @Data

@@ -26,6 +26,9 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework:spring-core'  // Explicitly adding spring-core
+    implementation 'org.springframework.kafka:spring-kafka:4.0.1'
+    implementation 'com.google.guava:guava:33.0.0-jre'  // Adding Guava for ListenableFuture
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
