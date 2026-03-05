@@ -35,16 +35,34 @@ public class StudentOps {
                 new Student(3, "Charlie", "English", 85)
         );
 
+
+        //get sum the marks of each student
         Map<Integer, Integer> studentMarks = students.stream()
                 .collect(Collectors.groupingBy(Student::getStudentId, Collectors.summingInt(Student::getMarks)));
 
+
         System.out.println(studentMarks);
 
+        //get the highest studentid
         Integer i = studentMarks.entrySet().stream()
                 .sorted(Map.Entry.<Integer, Integer>comparingByKey().reversed())
                 .map(Map.Entry::getKey)
                 .findFirst().get();
 
         System.out.println(i);
+
+
+        //another way with collectingAndThen
+        Map<String, Integer> collect = students.stream()
+                .collect(Collectors.groupingBy(
+                        Student::getName,
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+//                                list -> list.stream().mapToInt(Student::getMarks).sum()
+                                list -> list.stream().map(Student::getMarks).reduce(Integer::sum).get()
+                        )
+                ));
+
+        System.out.println(collect);
     }
 }
