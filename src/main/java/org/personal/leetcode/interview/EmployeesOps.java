@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class EmployeesOps {
@@ -21,6 +20,15 @@ public class EmployeesOps {
         private Integer empId;
         private String role;
         private Double salary;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Employee1 {
+
+        private Integer empId;
+        private String role;
     }
 
     public static void main(String[] args) {
@@ -55,7 +63,40 @@ public class EmployeesOps {
                 );
 
         System.out.println(collect);
+
+//        ExecutorService ex = Executors.newVirtualThreadPerTaskExecutor();
+//        ex.shutdown();
+
+//        employees
+//        employees.reversed();
+
+        List<Employee1> list = employees.stream()
+                .map(e -> new Employee1(e.getEmpId(), e.getRole()))
+                .toList();
+
+        Map<Integer, String> collect1 = employees.stream()
+                .collect(Collectors.toMap(
+                        Employee::getEmpId,
+                        Employee::getRole
+                ));
     }
+
+    public static sealed class A permits B{
+
+        void run(){};
+    }
+
+    public sealed static class B extends A{
+
+    }
+
+    public static non-sealed class C extends B {
+        @Override
+        void run() {
+            super.run();
+        }
+    }
+
 
 
 }

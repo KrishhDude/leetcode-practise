@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,9 +46,10 @@ public class StudentOps {
 
         //get the highest studentid
         Integer i = studentMarks.entrySet().stream()
-                .sorted(Map.Entry.<Integer, Integer>comparingByKey().reversed())
-                .map(Map.Entry::getKey)
-                .findFirst().get();
+                .max(Comparator.comparing(Map.Entry::getKey)).get().getKey();
+//                .sorted(Map.Entry.<Integer, Integer>comparingByKey().reversed())
+//                .map(Map.Entry::getKey)
+//                .findFirst().get();
 
         System.out.println(i);
 
